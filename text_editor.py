@@ -1,12 +1,6 @@
-from cProfile import label
-from distutils import text_file
-from select import select
 from tkinter import *
 from tkinter import filedialog
 from tkinter import font
-
-
-
 
 root = Tk()
 root.title("Text Editor")
@@ -128,7 +122,7 @@ hor_scroll = Scrollbar(my_frame, orient='horizontal')
 hor_scroll.pack(side=BOTTOM, fill=X)
 
 # Creat Text Box
-my_text = Text(my_frame, width=97, height=25, font=("Courier", 10, "italic"), selectforeground="green", undo=True, yscrollcommand=text_scroll.set, wrap="none", xscrollcommand=hor_scroll.set)
+my_text = Text(my_frame, width=97, height=25, font=("Courier", 10, "italic"), selectforeground="blue", undo=True, yscrollcommand=text_scroll.set, wrap="none", xscrollcommand=hor_scroll.set)
 my_text.pack()
 
 # Configure Scrollbar
@@ -163,6 +157,38 @@ edit_menu.add_command(label="Redo", command=my_text.edit_redo, accelerator="(Ctr
 # Add Status Bar To Bottom Of App
 status_bar = Label(root, text="Ready        ", anchor=E)
 status_bar.pack(fill=X, side=BOTTOM, ipady=5)
+
+
+# Search Bar
+Label(my_frame,text='Search: ').pack(side=LEFT)
+modify = Entry(my_frame)
+
+modify.pack(side=LEFT, fill=BOTH, expand=1)
+
+modify.focus_set()
+
+buttn = Button(my_frame, text='Find')
+buttn.pack(side=RIGHT)
+my_frame.pack(side=TOP)
+
+def find():
+	
+	my_text.tag_remove('found', '1.0', END)
+	ser = modify.get()
+	if ser:
+		idx = '1.0'
+		while 1:
+			idx = my_text.search(ser, idx, nocase=1,
+							stopindex=END)
+			if not idx: break
+			lastidx = '%s+%dc' % (idx, len(ser))
+			
+			my_text.tag_add('found', idx, lastidx)
+			idx = lastidx
+		my_text.tag_config('found', foreground='blue')
+	modify.focus_set()
+buttn.config(command=find)
+
 
 
 # Edit Bindings
