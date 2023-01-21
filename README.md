@@ -1,6 +1,6 @@
 # TextEditor
 This is a simple text editor with tkinter in python.
-# Run with Docker
+# Run with Docker in Linux
 In the directory you should run the following commands:
 ```
 docker build -t text_image .
